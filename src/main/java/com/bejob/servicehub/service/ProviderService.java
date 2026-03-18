@@ -41,7 +41,7 @@ public class ProviderService {
         Provider provider = Provider.builder()
                 .user(user)
                 .document(request.document())
-                .city(request.City())
+                .city(request.city())
                 .description(request.description())
                 .build();
 

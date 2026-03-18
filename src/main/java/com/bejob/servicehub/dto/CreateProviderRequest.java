@@ -14,7 +14,7 @@ public record CreateProviderRequest(
         String document,
 
         @NotBlank(message = "Cidade é obrigatória")
-        String City,
+        String city,
 
         String description
         ) {

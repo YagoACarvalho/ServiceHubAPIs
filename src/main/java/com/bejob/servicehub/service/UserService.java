@@ -5,6 +5,8 @@ import com.bejob.servicehub.dto.UserResponse;
 import com.bejob.servicehub.entity.User;
 import com.bejob.servicehub.exception.BusinessException;
 import com.bejob.servicehub.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,5 +45,18 @@ public class UserService {
                 savedUser.getActive(),
                 savedUser.getCreatedAt()
         );
+    }
+
+    public Page<UserResponse> list(Pageable pageable) {
+        var page = userRepository.findAll(pageable);
+        return page.map(u -> new UserResponse(
+                u.getId(),
+                u.getName(),
+                u.getEmail(),
+                u.getPhone(),
+                u.getType(),
+                u.getActive(),
+                u.getCreatedAt()
+        ));
     }
 }

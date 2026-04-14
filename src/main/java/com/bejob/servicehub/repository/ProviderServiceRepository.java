@@ -14,4 +14,8 @@ public interface ProviderServiceRepository extends JpaRepository<ProviderService
 
     List<ProviderService> findByProviderId(UUID providerId);
 
+    List<ProviderService> findByServiceCategoryNameIgnoreCaseAndProviderCityIgnoreCase(
+            String serviceCategoryName,
+            String city
+    );
 }

@@ -1,6 +1,7 @@
 package com.bejob.servicehub.service;
 
 import com.bejob.servicehub.dto.AssignServiceToProviderRequest;
+import com.bejob.servicehub.dto.ProviderSearchResponse;
 import com.bejob.servicehub.dto.ProviderServiceResponse;
 import com.bejob.servicehub.entity.Provider;
 import com.bejob.servicehub.entity.ProviderService;
@@ -9,7 +10,9 @@ import com.bejob.servicehub.exception.BusinessException;
 import com.bejob.servicehub.repository.ProviderRepository;
 import com.bejob.servicehub.repository.ProviderServiceRepository;
 import com.bejob.servicehub.repository.ServiceCategoryRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class ProviderServiceService {
@@ -53,5 +56,26 @@ public class ProviderServiceService {
                 saved.getServiceCategory().getId(),
                 saved.getServiceCategory().getName(),
                 saved.getCreatedAt());
+    }
+
+    public List<ProviderSearchResponse> search(String category, String city) {
+        return providerServiceRepository
+                .findByServiceCategoryNameIgnoreCaseAndProviderCityIgnoreCase(category, city)
+                .stream()
+                .filter(ps -> Boolean.TRUE.equals(ps.getProvider().getAvailable()))
+                .filter(ps ->Boolean.TRUE.equals(ps.getServiceCategory().getActive()))
+                .map(ps -> new ProviderSearchResponse(
+                        ps.getProvider().getId(),
+                        ps.getProvider().getUser().getId(),
+                        ps.getProvider().getUser().getName(),
+                        ps.getProvider().getUser().getEmail(),
+                        ps.getProvider().getUser().getPhone(),
+                        ps.getProvider().getCity(),
+                        ps.getProvider().getDescription(),
+                        ps.getProvider().getVerified(),
+                        ps.getProvider().getAvailable(),
+                        ps.getProvider().getAvarageRating(),
+                        ps.getServiceCategory().getName()))
+                .toList();
     }
 }

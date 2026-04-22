@@ -16,4 +16,11 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
 
     List<Job> findByStatus(JobStatus status);
 
+    List<Job> findByStatusAndCityIgnoreCaseAndServiceCategoryId(
+            JobStatus status,
+            String city,
+            UUID serviceCategoryId
+    );
+
+    List<Job> findByStatusAndCityIgnoreCase(JobStatus jobStatus, String city);
 }

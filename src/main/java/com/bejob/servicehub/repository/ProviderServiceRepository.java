@@ -18,4 +18,6 @@ public interface ProviderServiceRepository extends JpaRepository<ProviderService
             String serviceCategoryName,
             String city
     );
+
+
 }

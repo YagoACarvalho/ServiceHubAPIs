@@ -23,4 +23,6 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
     );
 
     List<Job> findByStatusAndCityIgnoreCase(JobStatus jobStatus, String city);
+
+    List<Job> findByProviderIdOrderByCreatedAtDesc(UUID providerId);
 }

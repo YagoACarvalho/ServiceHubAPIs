@@ -1,10 +1,7 @@
 package com.bejob.servicehub.controller;
 
 
-import com.bejob.servicehub.dto.AcceptJobRequest;
-import com.bejob.servicehub.dto.CreateJobRequest;
-import com.bejob.servicehub.dto.JobResponse;
-import com.bejob.servicehub.dto.JobSearchResponse;
+import com.bejob.servicehub.dto.*;
 import com.bejob.servicehub.service.JobService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -41,6 +38,14 @@ public class JobController {
             @RequestParam(required = false) UUID categoryId
     ) {
         List<JobSearchResponse> response = jobService.findOpenJobs(city, categoryId);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/provider/{providerId}")
+    public ResponseEntity<List<ProviderJobResponse>> findJobsByProvider(
+            @PathVariable UUID providerId
+    ) {
+        List<ProviderJobResponse> response = jobService.findJobsByProvider(providerId);
         return ResponseEntity.ok(response);
     }
 }

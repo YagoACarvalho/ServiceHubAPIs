@@ -1,9 +1,6 @@
 package com.bejob.servicehub.service;
 
-import com.bejob.servicehub.dto.AcceptJobRequest;
-import com.bejob.servicehub.dto.CreateJobRequest;
-import com.bejob.servicehub.dto.JobResponse;
-import com.bejob.servicehub.dto.JobSearchResponse;
+import com.bejob.servicehub.dto.*;
 import com.bejob.servicehub.entity.Job;
 import com.bejob.servicehub.entity.Provider;
 import com.bejob.servicehub.entity.ServiceCategory;
@@ -155,6 +152,29 @@ public class JobService {
                         job.getServiceCategory().getName(),
                         job.getClient().getId(),
                         job.getClient().getName(),
+                        job.getCreatedAt()
+                ))
+                .toList();
+    }
+
+    public List<ProviderJobResponse> findJobsByProvider(UUID providerId) {
+        Provider provider = providerRepository.findById(providerId)
+                .orElseThrow(() -> new BusinessException("Prestador não encontrado"));
+
+        return jobRepository.findByProviderIdOrderByCreatedAtDesc(provider.getId())
+                .stream()
+                .map(job -> new ProviderJobResponse(
+                        job.getId(),
+                        job.getDescription(),
+                        job.getCity(),
+                        job.getAddress(),
+                        job.getStatus(),
+                        job.getServiceCategory().getId(),
+                        job.getServiceCategory().getName(),
+                        job.getClient().getId(),
+                        job.getClient().getName(),
+                        job.getProvider() != null ? job.getProvider().getId() : null,
+                        job.getProvider() != null ? job.getProvider().getUser().getName() : null,
                         job.getCreatedAt()
                 ))
                 .toList();
